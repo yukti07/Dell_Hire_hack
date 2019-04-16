@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/table.css" type="text/css">
+    <meta charset="ISO-8859-1">
+    <title>Attrition</title>
+</head>
+<body>
+    <h1>Employee Attrition</h1>
+    
+    </form>
+    <form action="/graph">
+        <button type="Submit" class="btn1">Graphical Analysis</button>
+    </form>
+    <h3>
+        <div class="flashes">
+           <!-- {% for message in get_flashed_messages()%}-->
+                Accuracy: {{ message }}%
+            <!--{% endfor %}-->
+        </div>
+    </h3>
+    <table class="blueTable">
+        <th>ID</th><th>Attrition</th><th>Skills</th>
+        {% for row in data %}
+            <tr>
+            {% for d in row %}
+                <td>{{ d }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

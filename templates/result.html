@@ -3,18 +3,14 @@
   
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="AI based Resume screening">
-<meta name="author" content="CodeByte!">
 
 
-<link rel="shortcut icon" href="" type="image/x-icon">
-
-
-
-  <title>CodeByte</title>
+  <title>Dell Intenational Services</title>
   
-<link rel="stylesheet" href="./static/paper.css">
-<link rel="stylesheet" href="./static/demo.css">
-
+<link rel="stylesheet" href="../static/paper.css">
+<link rel="stylesheet" href="../static/demo.css">
+<link rel="stylesheet" href="../static/table.css" type="text/css">
+<meta charset="ISO-8859-1">
 <script type="text/javascript" async="" src="./static/analytics.js"></script>
 <script async="" src="./static/js"></script>
 <script
@@ -22,7 +18,7 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
 
-
+<!--
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -30,7 +26,7 @@
 
   gtag('config', 'UA-109223301-1');
 </script>
-
+-->
 
 <style>
 
@@ -41,7 +37,7 @@
 
 
 body {
-    background-image: url("./static/geometry2.png");
+    
 }
 
 #upload_button {
@@ -110,24 +106,22 @@ function resetResult(){
 
 <body data-gr-c-s-loaded="true">
   <div id="top" class="row site">
-    <div class="sm-12 md-8 col">
-      <div class="paper">
-        <div class="demo-title">
-          <div class="row flex-center">
+        
+          <div class="">
             <div class="text-center">
-              <h1>CodeByte</h1>
-              <h3>The automatic resume scruitny system</h3>
+              <h1 style="font-family:verdana;">Dell Hire</h1>
+              <h3>Recruitment Made Easy</h3>
             </div>
           </div>
-        </div>
-        <div class="to-top">
+        
+        <!--<div class="to-top">
           <a href="#top" class="paper-btn margin">^</a>
-        </div>
-        <div class="section">
-          
+        </div>-->
+        
+          <div class="section">
 		
             {% if session.logged_in %}
-		<table class="table-hover">
+		<table class="blueTable">
 			<thead>
 			  <tr>
 				<th>Rank</th>
@@ -139,18 +133,23 @@ function resetResult(){
 				<tbody>
 			  		<tr>
                                                 <td>{{r.rank}}</td>
-						<td><a href="{{url_for('custom_static', filename=r.filename)}}" target="_blank">{{r.filename}}</a></td>
+						<td style="align:left;"href="{{url_for('custom_static', filename=r.filename)}}" target="_blank">{{r.filename}}</td>
                                                 {% if "none" in links %}
-                                                <td><a href="#" target="_blank">None</a></td>
+                                                <td><a style="align:left;"href="#" target="_blank">None</a></td>
                                                 {% elif "\n" in links %}
 	 					{% set lin=links.split("\n")  %}
                                                 <td>
                                                 {% for i in range(lin|length)  %}
-                                                <a href="{{lin[i]}}" target="_blank" >{{lin[i]}}</a></br>
+                                               
+                                                {% if "github.com" in lin[i] %}
+                                                <a href="{{url_for('git_function')}}" target="_blank" >{{lin[i]}}</a></br>
+                                                {%  else %}
+                                                <a href="{{lin[i]}}" target="_blank">{{lin[i]}}</a></br>
+                                                {% endif  %}
                                                 {% endfor %}
                                                 </td>
                                                 {% else  %}
-                                                <td><a href="{{links}}" target="_blank">{{links}}</a></td>
+                                                <td><a style="align:left;" href="{{links}}" target="_blank">{{links}}</a></td>
                                                 {% endif  %}
 			  		</tr>
 				</tbody>
@@ -165,34 +164,7 @@ function resetResult(){
           </form>
           {% endif %}
 	</div>
-
-
-          
-      </div>
-    </div>
-
-    <div class="sm-12 md-4 col sidebar">
-    
-    <div class="paper">
-      <h3 class="sidebar-title" style="text-align:center">
-        CodeByte
-      </h3>
-      
-          <div class="row flex-center">
-              <p>  Rainamaker is a app to help employers by analysing resumes and CVs, surfacing candidates that best match the position and filtering out those who don't.
-              </p> 
-              <p>Uses recommendation engine techniques such as KNN, content based filtering for fuzzy matching job description with multiple resumes.
-                </p>
-            </div>
-     
-    </div>
-    
-    <div class="paper">
-      <div class="row flex-center">
-        <p>Made with 💛 @ <italic>CodeByte</italic>!</p>
-      </div>
-    </div>
-</div>
+  
 
 </div>
 
