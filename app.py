@@ -1,46 +1,5 @@
-"""
-Created on March 2018
-
-
-@author: 
-	
-▒█▀▀█ █▀▀█ █▀▀▄ █▀▀ ▒█▀▀█ █░░█ ▀▀█▀▀ █▀▀ 
-▒█░░░ █░░█ █░░█ █▀▀ ▒█▀▀▄ █▄▄█ ░░█░░ █▀▀ 
-▒█▄▄█ ▀▀▀▀ ▀▀▀░ ▀▀▀ ▒█▄▄█ ▄▄▄█ ░░▀░░ ▀▀▀ 
-
-
-"""
-
-#################################################################################################################################################
-
-
-
-
-"""
-●   A web app to help employers by analysing resumes and CVs, surfacing candidates that best match the position and filtering out those who don't.
-●   Used recommendation engine techniques such as KNN, content based filtering for fuzzy matching job description with multiple resumes.
-
-Prerequisites
-
-    Gensim
-    Numpy==1.11.3
-    Pandas
-    Sklearn
-    Dash
-    Antiwords
-    autocorrect
-
-
-
-
-        To Run this code: 
-            # python app.py
-
-	And open URL localhost:5000
-
-
-"""
-
+from cs50 import SQL
+import sqlite3
 import glob
 import os
 import warnings
@@ -52,19 +11,22 @@ from gensim.summarization import summarize
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
 from werkzeug import secure_filename
-
+from urllib.request import urlopen
+import json
 import pdf2txt as pdf
 import PyPDF2
 
 import screen
 import search
 import hashlib
+from machine import run
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
 
 app = Flask(__name__)
 
 app.config.from_object(__name__) # load config from this file , flaskr.py
+username="arunima811"
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
@@ -152,9 +114,81 @@ def resultsearch():
     if request.method == 'POST':
         search_st = request.form.get('Name')
         print(search_st)
-    result = search.res(search_st)
+    return_flask_name = search.res(search_st)
+    flask_return=return_flask_name[0]
+    name_string=return_flask_name[1]
+    linked_in=return_flask_name[2]
+    major_list=zip(flask_return,name_string,linked_in)
+    print(flask_return)
+    return render_template('result.html', results=major_list)
     # return result
-    return render_template('result.html', results = result)
+
+@app.route('/last_function', methods = ['POST', 'GET'])
+def git_function():
+    if request.method=='GET':
+        url = "https://api.github.com/users/"+username
+        data = json.load(urlopen(url))
+        tot_info={}
+        tot_info["BASIC INFO"]=""
+        tot_info ["GIT ID  "]=data.get("id")   
+        tot_info ["NAME   "]=data.get("name")  
+        tot_info ["COMPANY   "]=data.get("company")  
+        tot_info ["LOCATION  "]=data.get("location") 
+        tot_info ["EMAIL   "]=data.get("email")  
+        tot_info ["BIO    "]=data.get("bio")
+        tot_info ["FOLLOWERS    "]=data.get("followers")   
+        tot_info ["FOLLOWLING   "]=data.get("following")
+        tot_info ["CREATED AT   "]=data.get("created_at")  
+        tot_info ["LAST UPDATED AT   "]=data.get("updated_at")
+        tot_info ["NO OF PUBLIC REPO    "]=data.get("public_repos")
+        tot_info["NUMBER OF PUBLIC GIST    "]=data.get("public_gists") 
+ 
+
+        print('-----------------------------------------------------')
+        url = "https://api.github.com/users/"+username+"/repos"
+        tot_info["All repos/projects"]=""
+        data = json.load(urlopen(url))
+        count=0
+        for item in data:
+             print('***')
+             tot_info['REPO NAME ',count]=item.get("full_name")
+             tot_info["DESCRIPTION  ",count]=item.get('description')
+             tot_info["CREATED AT ",count]=item.get("created_at")  
+             tot_info["LAST UPDATED AT  ",count]=item.get("updated_at")
+             tot_info["PUSHED AT   ",count]=item.get("pushed_at")
+             tot_info["SIZE ",count]=item.get("size")
+             tot_info["LANGUAGE ",count]=item.get("language")
+             tot_info["LINK OF REPO ",count]= "https://github.com/"+item.get("full_name") 
+             count+=1
+ 
+
+
+
+        print('-----------------------------------------------------')
+        url = "https://api.github.com/users/"+username+"/followers"
+        data = json.load(urlopen(url))
+        tot_info["FOLLOWERS"]=""
+        c=0
+        for item in data:
+            temp=item.get("login")
+            tot_info["User Name ",c]=temp
+            tot_info["User name link ",c]="github link: https://github.com/"+temp
+            c+=1
+     
+        print('-----------------------------------------------------')
+        url = "https://api.github.com/users/"+username+"/following"
+        data = json.load(urlopen(url))
+        tot_info["FOLLOWING"]=""
+        c=0
+        for item in data:
+            temp=item.get("login")
+            tot_info["User Name ",c]=temp
+            tot_info["User name link ",c]="github link: https://github.com/"+temp
+            c+=1
+
+        print('-----------------------------------------------------')
+    return render_template('result1.html', tot_info=tot_info)
+
 
 
 @app.route('/Original_Resume/<path:filename>')
@@ -162,6 +196,29 @@ def custom_static(filename):
     return send_from_directory('./Original_Resumes', filename)
 
 
+@app.route("/attrition")
+
+def attrition():
+    conn = sqlite3.connect("dataset.db")
+    cur = conn.execute("SELECT * FROM dataset")
+    data = cur.fetchall()
+    att, skills = run(data)
+    #print(">>>>>>>>>>>>>>Attrition>>>>>>>>>>>>>>>>")
+    #print(att)
+    newd = []
+    i=0
+    for row in range(len(att)):
+        t = ()
+        t = t + (i,)
+        t = t + (att[row],)
+        t = t + (skills[row],)
+        i = i+1
+        newd.append(t)
+    return render_template("attrition.html", data=newd)
+
+@app.route("/graph")
+def graph():
+    return render_template("graph.html")
 
 if __name__ == '__main__':
    # app.run(debug = True) 

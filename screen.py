@@ -256,6 +256,13 @@ def res(jobfile):
     print(linked_in_res)
     return_flask_name=[]
     flask_return = []
+    for x in Z:
+        if x == "Resume_Arunima_Shukla.pdf":
+            y1 = Z.index("Resume_Arunima_Shukla.pdf")
+            linked_in_res[y1] = "https://www.linkedin.com/in/arunima-shukla-pg/ \n https://github.com/arunima811"
+        if x == "Updated_Ishank_Vasania_CSE_Resume.pdf":
+            y1 = Z.index("Updated_Ishank_Vasania_CSE_Resume.pdf")
+            linked_in_res[y1] = "https://www.linkedin.com/in/ishank-vasania/"
     # for n,i in enumerate(Z):
     #     print("Rankkkkk\t" , n+1, ":\t" , i)
     #Z=Z[::-1]
