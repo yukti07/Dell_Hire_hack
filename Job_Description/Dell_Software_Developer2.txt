@@ -1,0 +1,18 @@
+Computer Science with 1 year of industry experience in software development.
+Strong System development background with Java/C/C++ . Java Core knowledge Required. development/debug skills and flexibility to work across any given programming language.
+Strong in OS Internals, memory management, IPC, thread programming and monitoring applications.
+Proficient in software development tools such as IDEs, compilers, debuggers, emulators, source control system and defect/ bug tracking systems.
+Prior work experience of dealing with cross functional teams, partners / vendors, open sources and standards.
+Web development knowledge, Github pipelining, Database knowledge Required. 
+Key Skills and experiences:
+Java based web services
+Relational databases , Sql and ORM
+J2EE framework
+Object Oriented Analysis and Design
+JSP
+EJB (Enterprise Java Beans)
+XML, X query, XSL
+Test-Driven Development
+Proficient in data structures, computer architecture, statistics and technical writing
+Qualifications:
+A professional certification is recommended in Java Development. Applicant is required to have a degree in any of the following: computer science, information systems, mathematics or any other closely related field.  
