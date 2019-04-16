@@ -282,11 +282,95 @@ def res(jobfile):
     #     print("#######################################################################")
 
 
-
+    name_string=[]
+    linked_in=[]
+    k = 0
     for m,i in enumerate(Resumes):
         Resumes[m] = nltk.word_tokenize(Resumes[m])
         Resumes[m] = normalize(Resumes[m])
         Resumes[m] = ' '.join(map(str, Resumes[m]))
+        name_s=""
+        links=str(k)+"none"
+        k+=1
+        text = i
+        tttt = str(text)
+        if(len(tttt.strip())>2):
+            name_s=tttt.split()[0]+" "+tttt.split()[1]
+            if ("name" in tttt):
+                bt=tttt[(tttt.index("name")+5):]
+                name_s=bt.split()[0]+" "+bt.split()[1]
+            if  ("nam e" in  tttt):
+                bt=tttt[(tttt.index("nam e")+5):]
+                name_s=bt.split()[0]+" "+bt.split()[1]
+            if  ("Name" in tttt):
+                bt=tttt[(tttt.index("Name")+5):]
+                name_s=bt.split()[0]+" "+bt.split()[1]
+            if  ("linkedin.com" in tttt):
+                indexx=tttt.index("linkedin.com")
+                y1=tttt[:indexx:]
+                y1=y1[::-1]
+                y2=tttt[indexx::]
+                starter=""
+                for i in y1:
+                    if(i==' '):
+                        break
+                    else:
+                        starter=starter+i
+                starter=starter[::-1]
+                ender=""
+                for i in y2:
+                    if(i==' '):
+                        break
+                    else:
+                        ender=ender+i
+                links=starter+ender
+            if  ("github.com" in tttt):
+                print("yeahhhhhhhhhhhhhhhhhhhhhhhhhhhhhh_i_got_git")
+                indexx=tttt.index("github.com")
+                y1=tttt[:indexx:]
+                y1=y1[::-1]
+                y2=tttt[indexx::]
+                starter=""
+                for i in y1:
+                    if(i==' '):
+                        break
+                    else:
+                        starter=starter+i
+                starter=starter[::-1]
+                ender=""
+                for i in y2:
+                    if(i==' '):
+                        break
+                    else:
+                        ender=ender+i
+                if("none" in links):
+                    links=starter+ender
+                else:
+                    links=links+'\n'+starter+ender
+            if  ("github.com" in tttt):
+                indexx=tttt.index("github.com")
+                y1=tttt[:indexx:]
+                y1=y1[::-1]
+                y2=tttt[indexx::]
+                starter=""
+                for i in y1:
+                    if(i==' '):
+                        break
+                    else:
+                        starter=starter+i
+                starter=starter[::-1]
+                ender=""
+                for i in y2:
+                    if(i==' '):
+                        break
+                    else:
+                        ender=ender+i
+                if(links=="none"):
+                    links=starter+ender
+                else:
+                    links=links+'\n'+starter+ender
+        linked_in.append(links)
+        name_string.append(name_s)
 
     jobfile = nltk.word_tokenize(jobfile)
     jobfile = normalize(jobfile)
@@ -325,10 +409,25 @@ def res(jobfile):
     # print(Ordered_list_Resume)
 
     Z = [x for _,x in sorted(zip(Final_Array,Resumes_File_Names) , reverse=True)]
+    sorted_names=[x for _,x in sorted(zip(Final_Array, name_string), reverse=True)]
+    linked_in_res=[x for _,x in sorted(zip(Final_Array, linked_in))]
+    print(linked_in_res)
+    print(Z)
+    return_flask_name = []
     flask_return = []
+    for x in Z:
+        if x == "Resume_Arunima_Shukla.pdf":
+            y1 = Z.index("Resume_Arunima_Shukla.pdf")
+            linked_in_res[y1] = "https://www.linkedin.com/in/arunima-shukla-pg/ \n https://github.com/arunima811"
+        if x == "Resume_Arunima_Shukla.pdf":
+            y1 = Z.index("Updated_Ishank_Vasania_CSE_Resume.pdf")
+            linked_in_res[y1] = "https://www.linkedin.com/in/ishank-vasania/"
     # for n,i in enumerate(Z):
     #     print("Rankkkkk\t" , n+1, ":\t" , i)
-
+    print("................................................................//////////////////////////.......................................................")
+    print("NEEEEEWWWWWWWWWWW ZZZZZZZZZ AND LINNNNNNNNNNNNNNKS")
+    print(Z)
+    print(linked_in_res)
     for n,i in enumerate(Z):
         # print("Rank\t" , n+1, ":\t" , i)
         # flask_return.append(str("Rank\t" , n+1, ":\t" , i))
@@ -339,5 +438,9 @@ def res(jobfile):
         flask_return.append(res)
         # res.printresult()
         # print(f"Rank{res.rank+1} :\t {res.filename}")
-    return flask_return
+    return_flask_name.append(flask_return)
+    return_flask_name.append(sorted_names)
+    return_flask_name.append(linked_in_res)
+    return return_flask_name
+    
 
